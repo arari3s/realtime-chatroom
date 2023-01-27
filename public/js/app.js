@@ -1953,7 +1953,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    Echo.join('chat').listen('ChatSend', function (e) {
+    Echo.join('chat').listen('ChatSent', function (e) {
       console.log(e);
     });
   }

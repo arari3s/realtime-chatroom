@@ -74,7 +74,7 @@ export default {
 
     mounted() {
         Echo.join('chat')
-            .listen('ChatSend', (e) => {
+            .listen('ChatSent', (e) => {
                 console.log(e);
             });
     }
