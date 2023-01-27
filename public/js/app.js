@@ -1929,7 +1929,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       message: '',
-      messages: []
+      messages: [],
+      users: []
     };
   },
   props: {
@@ -1969,7 +1970,17 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this2 = this;
     this.fetchMessage();
-    Echo.join('chat').listen('ChatSent', function (e) {
+    Echo.join('chat').here(function (users) {
+      _this2.users = users;
+    }).joining(function (user) {
+      _this2.users.push(user);
+      console.log(user.name);
+    }).leaving(function (user) {
+      _this2.users = _this2.users.filter(function (u) {
+        return u.id != user.id;
+      });
+      console.log(user.name);
+    }).listen('ChatSent', function (e) {
       _this2.messages.push(e.message);
       console.log(e);
     });
@@ -2088,12 +2099,7 @@ var render = function render() {
     }
   })]), _vm._v(" "), _c("p", {
     staticClass: "text-muted"
-  }, [_vm._v("Username typing...")])])])]), _vm._v(" "), _vm._m(0)])]);
-};
-var staticRenderFns = [function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("div", {
+  }, [_vm._v("Username typing...")])])])]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4 mt-4 mt-md-0"
   }, [_c("div", {
     staticClass: "card"
@@ -2106,10 +2112,14 @@ var staticRenderFns = [function () {
     }
   }, [_c("ul", {
     staticClass: "list-group"
-  }, [_c("li", {
-    staticClass: "list-group-item"
-  }, [_vm._v("Username")])])])])]);
-}];
+  }, _vm._l(_vm.users, function (user, index) {
+    return _c("li", {
+      key: index,
+      staticClass: "list-group-item"
+    }, [_vm._v(_vm._s(user.name))]);
+  }), 0)])])])])]);
+};
+var staticRenderFns = [];
 render._withStripped = true;
 
 
