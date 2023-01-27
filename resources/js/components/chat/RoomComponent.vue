@@ -23,7 +23,7 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-4 mt-4 mt-md-0">
                 <div class="card">
                     <div class="card-header">Users Online</div>
                     <div id="user-online" class="card-body bg-secondary">
@@ -78,6 +78,12 @@ export default {
             this.message = '';
             // console.log(this.message);
         },
+
+        scrollDown() {
+            let container = document.getElementById('chat-box');
+            let scrollHeight = container.scrollHeight;
+            container.scrollTop = scrollHeight;
+        }
     },
 
     mounted() {
@@ -85,8 +91,22 @@ export default {
 
         Echo.join('chat')
             .listen('ChatSent', (e) => {
+                this.messages.push(e.message);
                 console.log(e);
             });
+
+        this.scrollDown;
+    },
+
+    updated() {
+        this.scrollDown();
     }
 }
 </script>
+
+<style lang="css" scoped>
+#chat-box {
+    overflow: auto;
+    height: 300px;
+}
+</style>
