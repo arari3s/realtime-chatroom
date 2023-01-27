@@ -1936,6 +1936,15 @@ __webpack_require__.r(__webpack_exports__);
     user: Object
   },
   methods: {
+    fetchMessage: function fetchMessage() {
+      var _this = this;
+      axios.get('/fetch').then(function (result) {
+        _this.messages = result.data;
+        console.log(result.data);
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    },
     sendMessage: function sendMessage() {
       this.messages.push({
         user: this.user,
@@ -1953,6 +1962,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
+    this.fetchMessage();
     Echo.join('chat').listen('ChatSent', function (e) {
       console.log(e);
     });
@@ -2023,7 +2033,21 @@ var render = function render() {
     staticClass: "card"
   }, [_c("div", {
     staticClass: "card-header"
-  }, [_vm._v("Chat Room")]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("div", {
+  }, [_vm._v("Chat Room")]), _vm._v(" "), _c("div", {
+    staticClass: "card-body bg-secondary",
+    attrs: {
+      id: "chat-box"
+    }
+  }, _vm._l(_vm.messages, function (chat, index) {
+    return _c("div", {
+      key: index,
+      staticClass: "media m-2 bg-light rounded"
+    }, [_c("div", {
+      staticClass: "media-body m-2"
+    }, [_c("h5", {
+      staticClass: "mt-0"
+    }, [_vm._v(_vm._s(chat.user.name))]), _vm._v("\n                            " + _vm._s(chat.message) + "\n                        ")])]);
+  }), 0), _vm._v(" "), _c("div", {
     staticClass: "card-footer"
   }, [_c("div", {
     staticClass: "form-group"
@@ -2053,24 +2077,9 @@ var render = function render() {
     }
   })]), _vm._v(" "), _c("p", {
     staticClass: "text-muted"
-  }, [_vm._v("Username typing...")])])])]), _vm._v(" "), _vm._m(1)])]);
+  }, [_vm._v("Username typing...")])])])]), _vm._v(" "), _vm._m(0)])]);
 };
 var staticRenderFns = [function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("div", {
-    staticClass: "card-body bg-secondary",
-    attrs: {
-      id: "chat-box"
-    }
-  }, [_c("div", {
-    staticClass: "media bg-light rounded"
-  }, [_c("div", {
-    staticClass: "media-body m-2"
-  }, [_c("h2", {
-    staticClass: "mt-0"
-  }, [_vm._v("Username")]), _vm._v("\n                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus sit amet quod\n                            molestias! Animi error minus, facere facilis dignissimos eius quaerat optio ab\n                            architecto ut molestias amet quod quas totam.\n                        ")])])]);
-}, function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("div", {

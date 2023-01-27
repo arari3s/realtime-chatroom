@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Chat;
 use App\Events\ChatSent;
 use Illuminate\Http\Request;
 
@@ -25,6 +26,11 @@ class HomeController extends Controller
     public function index()
     {
         return view('home');
+    }
+
+    public function fetchMessage()
+    {
+        return Chat::with('user')->get();
     }
 
     public function sendMessage(Request $request)
