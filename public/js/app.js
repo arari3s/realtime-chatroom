@@ -1930,7 +1930,9 @@ __webpack_require__.r(__webpack_exports__);
     return {
       message: '',
       messages: [],
-      users: []
+      users: [],
+      userTyping: false,
+      typingTimer: false
     };
   },
   props: {
@@ -1945,6 +1947,9 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {
         console.log(err);
       });
+    },
+    typingEvent: function typingEvent() {
+      Echo.join('chat').whisper('typing', this.user);
     },
     sendMessage: function sendMessage() {
       this.messages.push({
@@ -1983,6 +1988,14 @@ __webpack_require__.r(__webpack_exports__);
     }).listen('ChatSent', function (e) {
       _this2.messages.push(e.message);
       console.log(e);
+    }).listenForWhisper('typing', function (user) {
+      _this2.userTyping = user;
+      if (_this2.typingTimer) {
+        clearTimeout(_this2.typingTimer);
+      }
+      _this2.typingTimer = setTimeout(function () {
+        _this2.userTyping = false;
+      }, 2000);
     });
     this.scrollDown;
   },
@@ -2092,14 +2105,17 @@ var render = function render() {
         if (!$event.type.indexOf("key") && _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")) return null;
         return _vm.sendMessage();
       },
+      keydown: function keydown($event) {
+        return _vm.typingEvent();
+      },
       input: function input($event) {
         if ($event.target.composing) return;
         _vm.message = $event.target.value;
       }
     }
-  })]), _vm._v(" "), _c("p", {
+  })]), _vm._v(" "), _vm.userTyping ? _c("p", {
     staticClass: "text-muted"
-  }, [_vm._v("Username typing...")])])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v(_vm._s(_vm.userTyping.name) + " typing...")]) : _vm._e()])])]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4 mt-4 mt-md-0"
   }, [_c("div", {
     staticClass: "card"
